@@ -1,0 +1,23 @@
+<div class="home-container">
+    <h1>Veja o que estão compartilhando</h1>
+    <div class="pesquisa-container">
+        <form>
+            <fa-icon [icon]="faSearch"></fa-icon>
+            <input type="text" placeholder="Ou busque por um momento..." (input)="search($event)">
+        </form>
+    </div>
+    <div *ngIf="momentos.length > 0; else naoTemMomentos">
+        <div class="momentos-container">
+            <div class="momento" *ngFor="let momento of momentos">
+                <img src="{{baseApiUrl}}uploads/{{momento.image}}" alt="{{momento.title}}">
+                <h3>{{momento.title}}</h3>
+                <p class="data">Em: {{momento.created_at}}</p>
+                <p>Comentários: {{momento.comments!.length}}</p>
+                <p><a routerLink="momento/{{momento.id}}">Detalhes</a></p>
+            </div>            
+        </div>
+    </div>
+    <ng-template #naoTemMomentos>
+        <h1>Não há Momentos cadastrados!</h1>
+    </ng-template>
+</div>

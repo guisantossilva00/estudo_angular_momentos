@@ -1,0 +1,44 @@
+<div class="momento" *ngIf="moment">
+    <h1>{{moment.title}}</h1>
+    <img src="{{baseApiUrl}}uploads/{{moment.image}}" alt="{{moment.title}}">
+    <div class="sobre-momento">
+        <h3>Sobre este momento:</h3>
+        <p>{{moment.description}}</p>
+    </div>
+    <div class="acoes">
+        <h3>Ações:</h3>
+        <a routerLink="/momentos/edit/{{moment.id}}" class="edit-btn"><fa-icon [icon]="faEdit"></fa-icon> Editar</a>
+        <button class="remove-btn" (click)="remove(moment.id!)"><fa-icon [icon]="faTimes"></fa-icon> Excluir</button>
+    </div>
+    <div class="comentarios">
+        <h3>Comentários ({{moment.comments!.length > 0 ? moment.comments!.length : 0}})</h3>
+        <div *ngIf="moment.comments!.length > 0; else naoTemComentarios">
+            <div class="comentario-container" *ngFor="let comentario of moment.comments">
+                <p class="comentario">{{comentario.text}}</p>
+                <p class="autor"><span>por:</span> {{comentario.username}}</p>
+            </div>
+        </div>
+        <ng-template #naoTemComentarios>
+            <p>Não há Comentários</p>
+        </ng-template>
+    </div>
+    <div class="comentario-form">
+        <form [formGroup]="comentarioForm" #formDir="ngForm" (ngSubmit)='onSubmit(formDir)'>
+            <div class="form-grupo">
+                <label for="text">Comentário:</label>
+                <textarea formControlName="text" placeholder="O que você quer comentar ?" required></textarea>
+                <div *ngIf="text.invalid && formDir.submitted" class="validacao-erro">
+                    <p *ngIf="text.errors?.['required']">O texto é obrigatório</p>
+                </div>
+            </div>
+            <div class="form-grupo">
+                <label for="username">Nome:</label>
+                <input formControlName="username"  type="text" placeholder="Digite o seu nome" required>
+                <div *ngIf="username.invalid && formDir.submitted" class="validacao-erro">
+                    <p *ngIf="username.errors?.['required']">O nome é obrigatório</p>
+                </div>
+            </div>
+            <input type="submit" value="Comentar!">
+        </form>
+    </div>
+</div>
